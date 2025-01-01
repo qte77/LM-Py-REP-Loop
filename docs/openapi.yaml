@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: LLM-REPL Pipeline API
+  description: An API for generating, evaluating, and refactoring Python code using Large Language Models (LLMs) and a Python REPL.
+  version: 0.1.0
+  contact:
+    name: qte77
+    email: qte@77
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /generate:
+    post:
+      summary: Generate Python code based on a user prompt
+      operationId: generateCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: The user's code generation prompt
+              required:
+                - prompt
+      responses:
+        '200':
+          description: Successfully generated code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: The generated Python code
+        '400':
+          description: Invalid input
+
+  /evaluate:
+    post:
+      summary: Evaluate the correctness and efficiency of the generated code
+      operationId: evaluateCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: The Python code to evaluate
+              required:
+                - code
+      responses:
+        '200':
+          description: Successfully evaluated code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates if the code executed successfully
+                  output:
+                    type: string
+                    description: The output of the code execution
+                  error:
+                    type: string
+                    description: Any error messages if the code failed
+        '400':
+          description: Invalid input
+
+  /refactor:
+    post:
+      summary: Refactor the code based on feedback
+      operationId: refactorCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: The Python code to refactor
+                feedback:
+                  type: string
+                  description: Feedback for code refactoring
+              required:
+                - code
+                - feedback
+      responses:
+        '200':
+          description: Successfully refactored code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refactored_code:
+                    type: string
+                    description: The refactored Python code
+        '400':
+          description: Invalid input
+
+components:
+  schemas:
+    CodeGenerationRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          description: The user's code generation prompt
+      required:
+        - prompt
+
+    CodeEvaluationRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Python code to evaluate
+      required:
+        - code
+
+    CodeRefactorRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Python code to refactor
+        feedback:
+          type: string
+          description: Feedback for code refactoring
+      required:
+        - code
+        - feedback
+
+    CodeGenerationResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The generated Python code
+
+    CodeEvaluationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the code executed successfully
+        output:
+          type: string
+          description: The output of the code execution
+        error:
+          type: string
+          description: Any error messages if the code failed
+
+    CodeRefactorResponse:
+      type: object
+      properties:
+        refactored_code:
+          type: string
+          description: The refactored Python code
+
