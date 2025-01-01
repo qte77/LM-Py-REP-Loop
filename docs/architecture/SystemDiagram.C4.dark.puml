@@ -1,0 +1,28 @@
+@startuml
+' https://www.plantuml.com/plantuml
+!theme crt-amber
+!define RECTANGLE class
+
+skinparam componentStyle uml2
+
+rectangle "LLM-REPL Pipeline" {
+    [User] --> [API Gateway]
+    [API Gateway] --> [Code Generator]
+    [Code Generator] --> [Python REPL]
+    [Python REPL] --> [Code Evaluator]
+    [Code Evaluator] --> [Code Refactor]
+    [Code Refactor] --> [Code Generator]
+    [Code Evaluator] --> [Feedback Loop]
+    [Feedback Loop] --> [Code Generator]
+    [Code Generator] --> [Version Control]
+    [Version Control] --> [CI/CD Pipeline]
+    [CI/CD Pipeline] --> [Deployment]
+    [API Gateway] --> [OpenAPI Specification]
+}
+
+rectangle "External Systems" {
+    [LLM API] --> [Code Generator]
+}
+
+@enduml
+
